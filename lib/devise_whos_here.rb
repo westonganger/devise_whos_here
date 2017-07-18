@@ -11,15 +11,19 @@ module Devise
       val = Rails.cache.read("devise_whos_here_#{model}")
       if !val.is_a?(Hash)
         val = {}
-        Rails.cache.write("devise_whos_here_#{model}", val)
+        delete!(model)
       end
       val
     end
 
     def self.write!(model, id)
       h = get(model)
-      h[id] = Time.current
+      h[id] = Time.now
       Rails.cache.write("devise_whos_here_#{model}", h)
+    end
+
+    def self.delete!(model)
+      Rails.cache.write("devise_whos_here_#{model}", {})
     end
 
   end
@@ -27,6 +31,6 @@ end
 
 Warden::Manager.after_set_user do |record, warden, opts|
   if record.respond_to?(:last_here_at)
-    Devise::WhosHere.write!(record.class_name, record[record.primary_key])
+    Devise::WhosHere.write!(record.class.name, record[record.class.primary_key])
   end
 end

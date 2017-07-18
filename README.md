@@ -31,7 +31,7 @@ user.last_here_at # returns last known request time
 Whenever you want to clear the cache simply run
 
 ```ruby
-Devise::WhosHere.clear!
+User.clear_whos_here!
 ```
 
 # Credits

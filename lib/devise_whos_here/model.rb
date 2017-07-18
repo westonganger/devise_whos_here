@@ -1,22 +1,33 @@
 module Devise
   module Models
-
     module WhosHere
-      def last_here_at
-        list = Devise::WhosHere.get(class_name)
-        list[self[primary_key]]
+
+      def self.included(base)
+        base.class_eval do
+          include InstanceMethods
+          extend ClassMethods
+        end
       end
 
-      def self.last_here_since(time)
-        ids = get.select{|_,v| v && v >= time}.keys
-        users = find(ids).index_by{|x| x[primary_key]}.slice(*ids).values
-        users || []
+      module InstanceMethods
+        def last_here_at
+          list = Devise::WhosHere.get(self.class.name)
+          list[self[self.class.primary_key]]
+        end
       end
 
-      def self.clear_whos_here!
-        Rails.cache.write!("devise_whos_here_#{class_name}", {})
+      module ClassMethods
+        def last_here_since(time)
+          ids = Devise::WhosHere.get(self.class.name).select{|_,v| v && v >= time}.keys
+          users = find(ids).index_by{|x| x[self.class.primary_key]}.slice(*ids).values
+          users || []
+        end
+
+        def clear_whos_here!
+          Devise::WhosHere.delete!(self.class.name)
+        end
       end
+
     end
-
   end
 end

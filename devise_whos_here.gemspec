@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.email       = 'westonganger@gmail.com'
   s.homepage 	= "https://github.com/westonganger/#{gem_name}"
   
-  text = "Devise extension for logging current active users logged in using only the fast Rails cache"
+  text = "Devise extension for logging current active users logged in using only the fast Rails cache and not your database"
   s.summary     = text
   s.description = text
 
