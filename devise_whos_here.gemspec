@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.name        = gem_name
   s.version     =  DeviseWhosHere::VERSION
   s.author	= "Weston Ganger"
-  s.email       = 'westonganger@gmail.com'
+  s.email       = 'weston@westonganger.com'
   s.homepage 	= "https://github.com/westonganger/#{gem_name}"
   
   text = "Devise extension for logging current active users logged in using only the fast Rails cache and not your database"
